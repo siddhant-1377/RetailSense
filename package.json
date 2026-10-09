@@ -1,0 +1,31 @@
+{
+  "name": "retailsense-dwm-mini-project",
+  "private": true,
+  "version": "1.1.1",
+  "type": "module",
+  "scripts": {
+    "postinstall": "node scripts/install-python.mjs",
+    "dev": "node scripts/dev.mjs",
+    "dev:frontend": "vite --config frontend/vite.config.ts",
+    "dev:backend": "node scripts/backend.mjs",
+    "build": "tsc -p frontend/tsconfig.app.json && tsc -p frontend/tsconfig.node.json && vite build --config frontend/vite.config.ts",
+    "preview": "vite preview --config frontend/vite.config.ts"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^6.1.0",
+    "@types/node": "^22.10.2"
+  }
+}

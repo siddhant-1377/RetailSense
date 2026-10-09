@@ -1,0 +1,29 @@
+import type { ChangeEvent, ReactNode } from 'react';
+import { AlertCircle, CheckCircle2, Download, Loader2 } from 'lucide-react';
+
+export function PageHeader({ eyebrow, title, description, right }: { eyebrow?: string; title: string; description?: string; right?: ReactNode }) {
+  return <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div><div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600">{eyebrow}</div><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>{description&&<p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">{description}</p>}</div>{right}
+  </div>;
+}
+
+export function Card({ children, className='' }: { children: ReactNode; className?: string }) { return <div className={`rounded-2xl border border-slate-200 bg-white shadow-soft ${className}`}>{children}</div>; }
+export function CardHeader({ title, description, right }: { title: string; description?: string; right?: ReactNode }) { return <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4"><div><div className="font-semibold">{title}</div>{description&&<div className="mt-1 text-xs text-slate-500">{description}</div>}</div>{right}</div>; }
+export function CardBody({ children, className='' }: { children: ReactNode; className?: string }) { return <div className={`p-5 ${className}`}>{children}</div>; }
+export function MetricCard({ label, value, helper, icon, tone='indigo' }: { label: string; value: string; helper?: string; icon: ReactNode; tone?: 'indigo'|'emerald'|'amber'|'sky' }) {
+  const cls = {indigo:'bg-indigo-50 text-indigo-600', emerald:'bg-emerald-50 text-emerald-600', amber:'bg-amber-50 text-amber-600', sky:'bg-sky-50 text-sky-600'}[tone];
+  return <Card><CardBody><div className="flex items-start justify-between"><div><div className="text-sm text-slate-500">{label}</div><div className="mt-2 text-2xl font-bold tracking-tight">{value}</div>{helper&&<div className="mt-1 text-xs text-slate-400">{helper}</div>}</div><div className={`rounded-xl p-2.5 ${cls}`}>{icon}</div></div></CardBody></Card>;
+}
+
+export function Button({ children, onClick, variant='primary', disabled=false, type='button', className='' }: { children: ReactNode; onClick?: ()=>void; variant?: 'primary'|'secondary'|'danger'|'ghost'; disabled?: boolean; type?: 'button'|'submit'; className?: string }) {
+  const base = 'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50';
+  const styles = { primary:'bg-indigo-600 text-white hover:bg-indigo-700', secondary:'bg-slate-100 text-slate-800 hover:bg-slate-200', danger:'bg-rose-50 text-rose-700 hover:bg-rose-100', ghost:'text-slate-600 hover:bg-slate-100' };
+  return <button type={type} disabled={disabled} onClick={onClick} className={`${base} ${styles[variant]} ${className}`}>{children}</button>;
+}
+export function Select({ value, onChange, options, className='' }: { value: string; onChange:(e: ChangeEvent<HTMLSelectElement>)=>void; options:{value:string;label:string}[]; className?:string }) { return <select value={value} onChange={onChange} className={`input ${className}`}>{options.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select> }
+export function Input({ value, onChange, type='text', min, max, step, placeholder, className='' }: { value: string|number; onChange:(e: ChangeEvent<HTMLInputElement>)=>void; type?: string; min?: number; max?: number; step?: number; placeholder?: string; className?: string }) { return <input className={`input ${className}`} value={value} onChange={onChange} type={type} min={min} max={max} step={step} placeholder={placeholder}/> }
+export function Badge({ children, tone='slate' }: { children: ReactNode; tone?: 'slate'|'green'|'amber'|'red'|'indigo' }) { const c={slate:'bg-slate-100 text-slate-600',green:'bg-emerald-50 text-emerald-700',amber:'bg-amber-50 text-amber-700',red:'bg-rose-50 text-rose-700',indigo:'bg-indigo-50 text-indigo-700'}[tone]; return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ${c}`}>{children}</span> }
+export function Notice({ kind='info', children }: { kind?: 'info'|'success'|'error'; children: ReactNode }) { const c={info:'border-sky-200 bg-sky-50 text-sky-800',success:'border-emerald-200 bg-emerald-50 text-emerald-800',error:'border-rose-200 bg-rose-50 text-rose-800'}[kind]; const I=kind==='success'?CheckCircle2:kind==='error'?AlertCircle:AlertCircle; return <div className={`flex items-start gap-2 rounded-xl border p-3 text-sm ${c}`}><I className="mt-0.5 shrink-0" size={16}/><div>{children}</div></div> }
+export function Loading({ label='Processing...' }: { label?:string }) { return <div className="flex items-center justify-center gap-2 py-12 text-sm text-slate-500"><Loader2 size={18} className="animate-spin"/>{label}</div> }
+export function ExportButton({ label='Download', onClick }: { label?:string; onClick:()=>void }) { return <Button variant="secondary" onClick={onClick}><Download size={16}/>{label}</Button> }
+export function Table({ columns, rows }: { columns: {key:string;label:string}[]; rows: Record<string,ReactNode>[] }) { return <div className="overflow-x-auto rounded-xl border border-slate-200"><table className="min-w-full text-sm"><thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wider text-slate-500"><tr>{columns.map(c=><th key={c.key} className="px-4 py-3">{c.label}</th>)}</tr></thead><tbody className="divide-y divide-slate-100 bg-white">{rows.map((r,i)=><tr key={i} className="hover:bg-slate-50/70">{columns.map(c=><td key={c.key} className="whitespace-nowrap px-4 py-3 text-slate-700">{r[c.key]}</td>)}</tr>)}</tbody></table></div> }
